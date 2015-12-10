@@ -1,4 +1,7 @@
 #!/bin/bash
+logfile=/var/log/hazelcast-configure.log
+#Start the logging
+exec >> $logfile 2>&1
 hzxml=/opt/hazelcast/hazel*/bin/hazelcast.xml
 stackname=`uname -a | awk {'print $2'} | awk -F "-" {'print $1'}`
 counter=1
@@ -34,7 +37,6 @@ do
 echo "server:" $i
 echo "running awk"
 sed -i 's/dev/'$stackname'/g' $hzxml
-sed -i 's/dev-pass/'$stackname'/g' $hzxml
 sed -i 's/localhost/'$stackname-mc1'/g' $hzxml
 sed -i '/<member-list>/a  \                      \<member>'$i'</member>' $hzxml
 echo "done running aws"
